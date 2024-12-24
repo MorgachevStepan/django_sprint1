@@ -22,16 +22,47 @@ posts = [
                 с мели приливом и пригнало гораздо ближе к берегу.
                 Это подало мне надежду, что, когда ветер стихнет,
                 мне удастся добраться до корабля и запастись едой и
-                другими необходимыми вещами.''',
+                другими необходимыми вещами. Я немного приободрился,
+                хотя печаль о погибших товарищах не покидала меня.
+                Мне всё думалось, что, останься мы на корабле, мы
+                непременно спаслись бы. Теперь из его обломков мы могли бы
+                построить баркас, на котором и выбрались бы из этого
+                гиблого места.''',
+    },
+    {
+        'id': 2,
+        'location': 'Остров отчаянья',
+        'date': '25 октября 1659 года',
+        'category': 'not-my-day',
+        'text': '''Всю ночь и весь день шёл дождь и дул сильный
+                порывистый ветер. 25 октября.  Корабль за ночь разбило
+                в щепки; на том месте, где он стоял, торчат какие-то
+                жалкие обломки,  да и те видны только во время отлива.
+                Весь этот день я хлопотал  около вещей: укрывал и
+                укутывал их, чтобы не испортились от дождя.''',
     },
 ]
 
-def index(request):
-    return render(request, 'blog/index.html', {'posts': posts})
 
 def post_detail(request, id):
     post = next((post for post in posts if post['id'] == id), None)
+    if post is None:
+        return render(request, 'blog/404.html', status=404)
     return render(request, 'blog/detail.html', {'post': post})
 
+
+def index(request):
+    reversed_posts = list(reversed(posts))  # Инвертируем список постов
+    return render(
+        request,
+        'blog/index.html',
+        {'posts': reversed_posts}
+    )
+
+
 def category_posts(request, category_slug):
-    return render(request, 'blog/category.html', {'category_slug': category_slug})
+    return render(
+        request,
+        'blog/category.html',
+        {'category_slug': category_slug}
+    )
